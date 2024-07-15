@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
-import TextInputField from '../components/TextInputField';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { Container, Title, SubmitButton, SubmitText } from '../styles/checkout';
+import TextInputField from '../components/TextInputField';
 
 const CheckoutScreen = () => {
   const [name, setName] = useState('');
@@ -20,24 +20,26 @@ const CheckoutScreen = () => {
       phoneNumber,
       paymentMethod,
       cart,
-      total
+      total,
     });
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Página de Checkout</Text>
+    <Container>
+      <Title>Página de Checkout</Title>
       <TextInputField
         label="Nome"
         placeholder="Digite seu nome"
         value={name}
         onChangeText={setName}
+        required
       />
       <TextInputField
         label="Endereço"
         placeholder="Digite seu endereço"
         value={address}
         onChangeText={setAddress}
+        required
       />
       <TextInputField
         label="Número para Contato"
@@ -45,30 +47,20 @@ const CheckoutScreen = () => {
         value={phoneNumber}
         onChangeText={setPhoneNumber}
         keyboardType="phone-pad"
+        required
       />
       <TextInputField
         label="Forma de Pagamento"
         placeholder="Digite a forma de pagamento"
         value={paymentMethod}
         onChangeText={setPaymentMethod}
+        required
       />
-      <Button title="Finalizar Compra" onPress={handleCheckout} />
-    </View>
+      <SubmitButton onPress={handleCheckout}>
+        <SubmitText>Finalizar Compra</SubmitText>
+      </SubmitButton>
+    </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-});
 
 export default CheckoutScreen;

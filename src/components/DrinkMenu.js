@@ -2,17 +2,30 @@ import React from 'react';
 import { View, Text, Image, FlatList, StyleSheet, Button } from 'react-native';
 import burgersData from '../assets/bebidas/drinksData';
 import { useCart } from '../context/CartContext';
+import { FontAwesome } from '@expo/vector-icons';
+import {
+  ItemContainer,
+  ItemImage,
+  ItemName,
+  SubmitButton,
+  SubmitText,
+  Message,
+  ItemPrice,
+} from '../styles/burger';
 
 const DrinkMenu = () => {
   const { addToCart, message } = useCart();
 
   const renderItem = ({ item }) => (
-    <View style={styles.itemContainer}>
-      <Image source={item.image} style={styles.itemImage} />
-      <Text style={styles.itemName}>{item.name}</Text>
-      <Text style={styles.itemPrice}>${item.price.toFixed(2)}</Text>
-      <Button title="+" onPress={() => addToCart(item)} />
-    </View>
+    <ItemContainer>
+      <ItemImage source={item.image} />
+      <ItemName>{item.name}</ItemName>
+      <ItemPrice>{item.dsc}</ItemPrice>
+      <SubmitButton onPress={() => addToCart(item)}>
+        <SubmitText>R${item.price.toFixed(2)}</SubmitText>
+        <FontAwesome name="shopping-cart" size={20} color="white" />
+      </SubmitButton>
+    </ItemContainer>
   );
 
   return (
@@ -22,38 +35,9 @@ const DrinkMenu = () => {
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
       />
-      {message ? <Text style={styles.message}>{message}</Text> : null}
+      {message ? <Message>{message}</Message> : null}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  itemContainer: {
-    flexDirection: 'row',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  itemImage: {
-    width: 100,
-    height: 100,
-    marginRight: 10,
-  },
-  itemName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  itemPrice: {
-    marginLeft: 'auto',
-    fontSize: 16,
-    color: '#888',
-  },
-  message: {
-    textAlign: 'center',
-    color: 'green',
-    fontSize: 18,
-    marginVertical: 10,
-  },
-});
 
 export default DrinkMenu;

@@ -12,7 +12,17 @@ const App = () => {
   return (
     <CartProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Drawer">
+        <Stack.Navigator initialRouteName="Drawer"
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: '#222',
+            },
+            headerTintColor: '#FFF',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        >
           <Stack.Screen name="Drawer" component={DrawerNavigator} options={{ headerShown: false }} />
           <Stack.Screen name="Checkout" component={CheckoutScreen} />
           <Stack.Screen name="Review" component={ReviewScreen} />

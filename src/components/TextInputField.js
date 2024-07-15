@@ -1,30 +1,20 @@
 import React from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View } from 'react-native';
+import { StyledTextInput } from '../styles/Form';
 
-const TextInputField = ({ label, value, onChangeText, placeholder }) => {
+const TextInputField = ({ placeholder, value, onChangeText, keyboardType, required }) => {
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
+    <View>
+      <StyledTextInput 
         placeholder={placeholder}
         value={value}
         onChangeText={onChangeText}
+        keyboardType={keyboardType}
+        placeholderTextColor="#FFF"
+        required={required}
       />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 20,
-  },
-  input: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-  },
-});
 
 export default TextInputField;

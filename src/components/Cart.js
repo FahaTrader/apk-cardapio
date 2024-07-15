@@ -1,7 +1,21 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet, Button } from 'react-native';
+import { FlatList } from 'react-native';
 import { useCart } from '../context/CartContext';
 import { useNavigation } from '@react-navigation/native';
+import { 
+  Container, 
+  ItemContainer, 
+  ItemName, 
+  ItemPrice,
+  QuantityContainer,
+  QuantityText,
+  Total,
+  EmptyMessage,
+  Message,
+  StyledButton,
+  StyledText
+} from '../styles/cart'
+import { SubmitButton, SubmitText } from '../styles/burger';
 
 const Cart = () => {
   const { cart, removeFromCart, message, addToCart } = useCart();
@@ -25,84 +39,40 @@ const Cart = () => {
   
 
   const renderItem = ({ item }) => (
-    <View style={styles.itemContainer}>
-      <Text style={styles.itemName}>{item.name}</Text>
-      <Text style={styles.itemPrice}>${item.price.toFixed(2)}</Text>
-      <View style={styles.quantityContainer}>
-        <Button title="-" onPress={() => removeFromCart(item.id)} />
-        <Text style={styles.quantityText}>{item.quantity}</Text>
-        <Button title="+" onPress={() => addToCart(item)} />
-      </View>
-    </View>
+    <ItemContainer>
+      <ItemName>{item.name}</ItemName>
+      <ItemPrice>${item.price.toFixed(2)}</ItemPrice>
+      <QuantityContainer>
+        <StyledButton onPress={() => removeFromCart(item.id)}>
+          <StyledText>-</StyledText>
+        </StyledButton>
+        <QuantityText>{item.quantity}</QuantityText>
+        <StyledButton onPress={() => addToCart(item)}>
+          <StyledText>+</StyledText>
+        </StyledButton>
+      </QuantityContainer>
+    </ItemContainer>
   );
 
   return (
-    <View style={styles.container}>
+    <Container>
       <FlatList
         data={cart}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
       />
-      {cart.length === 0 && <Text style={styles.emptyMessage}>O carrinho está vazio</Text>}
-      {message ? <Text style={styles.message}>{message}</Text> : null}
+      {cart.length === 0 && <EmptyMessage>O carrinho está vazio</EmptyMessage>}
+      {message ? <Message>{message}</Message> : null}
 
       {/* Exibição do valor total */}
-      <Text style={styles.total}>Total: ${calculateTotal()}</Text>
+      <Total>Total: ${calculateTotal()}</Total>
 
       {/* Botão para navegar para a tela de checkout */}
-      <Button title="Finalizar Compra" onPress={handleCheckoutPress} />
-    </View>
+      <SubmitButton onPress={handleCheckoutPress}>
+        <SubmitText>Preencher dados</SubmitText>
+      </SubmitButton>
+    </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-  },
-  itemContainer: {
-    flexDirection: 'row',
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    alignItems: 'center',
-  },
-  itemName: {
-    flex: 1,
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  itemPrice: {
-    fontSize: 16,
-    color: '#888',
-    marginRight: 10,
-  },
-  quantityContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  quantityText: {
-    fontSize: 18,
-    marginHorizontal: 10,
-  },
-  total: {
-    textAlign: 'right',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 10,
-  },
-  emptyMessage: {
-    textAlign: 'center',
-    marginVertical: 20,
-    fontSize: 18,
-    color: '#888',
-  },
-  message: {
-    textAlign: 'center',
-    marginVertical: 10,
-    fontSize: 18,
-    color: 'green',
-  },
-});
 
 export default Cart;
