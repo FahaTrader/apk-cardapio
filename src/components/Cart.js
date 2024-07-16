@@ -1,21 +1,7 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { useCart } from '../context/CartContext';
 import { useNavigation } from '@react-navigation/native';
-import { 
-  Container, 
-  ItemContainer, 
-  ItemName, 
-  ItemPrice,
-  QuantityContainer,
-  QuantityText,
-  Total,
-  EmptyMessage,
-  Message,
-  StyledButton,
-  StyledText
-} from '../styles/cart'
-import { SubmitButton, SubmitText } from '../styles/burger';
 
 const Cart = () => {
   const { cart, removeFromCart, message, addToCart } = useCart();
@@ -36,43 +22,117 @@ const Cart = () => {
       total: calculateTotal()
     });
   };
-  
 
   const renderItem = ({ item }) => (
-    <ItemContainer>
-      <ItemName>{item.name}</ItemName>
-      <ItemPrice>${item.price.toFixed(2)}</ItemPrice>
-      <QuantityContainer>
-        <StyledButton onPress={() => removeFromCart(item.id)}>
-          <StyledText>-</StyledText>
-        </StyledButton>
-        <QuantityText>{item.quantity}</QuantityText>
-        <StyledButton onPress={() => addToCart(item)}>
-          <StyledText>+</StyledText>
-        </StyledButton>
-      </QuantityContainer>
-    </ItemContainer>
+    <View style={styles.itemContainer}>
+      <Text style={styles.itemName}>{item.name}</Text>
+      <Text style={styles.itemPrice}>${item.price.toFixed(2)}</Text>
+      <View style={styles.quantityContainer}>
+        <TouchableOpacity style={styles.styledButton} onPress={() => removeFromCart(item.id)}>
+          <Text style={styles.styledText}>-</Text>
+        </TouchableOpacity>
+        <Text style={styles.quantityText}>{item.quantity}</Text>
+        <TouchableOpacity style={styles.styledButton} onPress={() => addToCart(item)}>
+          <Text style={styles.styledText}>+</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 
   return (
-    <Container>
+    <View style={styles.container}>
       <FlatList
         data={cart}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
       />
-      {cart.length === 0 && <EmptyMessage>O carrinho está vazio</EmptyMessage>}
-      {message ? <Message>{message}</Message> : null}
+      {cart.length === 0 && <Text style={styles.emptyMessage}>O carrinho está vazio</Text>}
+      {message ? <Text style={styles.message}>{message}</Text> : null}
 
       {/* Exibição do valor total */}
-      <Total>Total: ${calculateTotal()}</Total>
+      <Text style={styles.total}>Total: ${calculateTotal()}</Text>
 
       {/* Botão para navegar para a tela de checkout */}
-      <SubmitButton onPress={handleCheckoutPress}>
-        <SubmitText>Preencher dados</SubmitText>
-      </SubmitButton>
-    </Container>
+      <TouchableOpacity style={styles.submitButton} onPress={handleCheckoutPress}>
+        <Text style={styles.submitText}>Preencher dados</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+  },
+  itemContainer: {
+    flexDirection: 'row',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    alignItems: 'center',
+  },
+  itemName: {
+    flex: 1,
+    fontSize: 23,
+    fontWeight: 'bold',
+  },
+  itemPrice: {
+    fontSize: 16,
+    color: '#333',
+    marginRight: 10,
+  },
+  quantityContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  quantityText: {
+    fontSize: 18,
+    marginHorizontal: 10,
+  },
+  total: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  emptyMessage: {
+    textAlign: 'center',
+    marginVertical: 20,
+    fontSize: 18,
+    color: '#888',
+  },
+  message: {
+    textAlign: 'center',
+    marginVertical: 10,
+    fontSize: 18,
+    color: 'green',
+  },
+  styledButton: {
+    backgroundColor: 'red',
+    padding: 7,
+    paddingHorizontal: 13,
+    borderRadius: 50,
+  },
+  styledText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  submitButton: {
+    backgroundColor: 'red',
+    paddingVertical: 10,
+    paddingHorizontal: 80,
+    borderRadius: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  submitText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+});
 
 export default Cart;

@@ -1,11 +1,11 @@
 import React from 'react';
-import { View } from 'react-native';
-import { StyledTextInput } from '../styles/Form';
+import { View, TextInput, StyleSheet } from 'react-native';
 
 const TextInputField = ({ placeholder, value, onChangeText, keyboardType, required }) => {
   return (
     <View>
-      <StyledTextInput 
+      <TextInput 
+        style={styles.textInput}
         placeholder={placeholder}
         value={value}
         onChangeText={onChangeText}
@@ -16,5 +16,18 @@ const TextInputField = ({ placeholder, value, onChangeText, keyboardType, requir
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  textInput: {
+    height: 40,
+    marginBottom: 20,
+    padding: 10,
+    borderColor: '#FFF',
+    borderBottomWidth: 1,
+    borderRadius: 5,
+    fontSize: 16,
+    color: '#FFF', // Cor do texto
+  },
+});
 
 export default TextInputField;
